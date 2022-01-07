@@ -74,12 +74,12 @@ def execute() {
 			
 		}
     
-		post { 
-			always { 
+		stage('IO - Archive') { 
+			
 				archiveArtifacts artifacts: '**/*-results*.json', allowEmptyArchive: 'true'
 				//remove the state json file it has sensitive information
-				sh 'rm io_state.json'
-			}
+				//sh 'rm io_state.json'
+			
 		
     }
 }
