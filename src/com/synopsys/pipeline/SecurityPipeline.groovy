@@ -14,7 +14,6 @@ def execute() {
 
         stage('Checkout Code') {
             cleanWs()
-            sh 'apt-get install -y unzip'
             git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
         }
 
