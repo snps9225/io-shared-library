@@ -59,14 +59,7 @@ def execute() {
 				
 			}
         
-			stage('SCA - Black Duck') {
-				
-				   echo 'Running SCA using Black Duck'
-				   synopsysIO(connectors: [blackduck(configName: 'BIZDevBD', projectName: 'devsecops-test/github-io-sample', projectVersion: '1.0')]) {
-					  sh 'io --stage execution --state io_state.json'
-				   }
-				
-			}
+			
         
 			stage('IO - Workflow') {
 				
