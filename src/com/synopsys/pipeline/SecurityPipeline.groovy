@@ -36,6 +36,13 @@ def execute() {
 					 }
 				
 			}
+	    stage('IO - Read Prescription') {
+		    			print("End REST API request to IO")
+
+    					def PrescriptionJson = readJSON file: 'io_state.json'
+					 print("Updated PrescriptionJson JSON :\n$PrescriptionJson\n")
+
+	    }
         
 			stage('SAST- RapidScan') {
 				environment {
