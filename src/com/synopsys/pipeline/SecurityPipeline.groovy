@@ -20,7 +20,6 @@ def execute() {
       //your build command, your way here...    
       //sh '''mvn clean compile'''
       echo 'build source code'
-
     }
 
     stage('IO - Setup Prescription') {
@@ -31,14 +30,13 @@ def execute() {
       ]) {
         sh 'io --stage io'
       }
-
     }
+    
     stage('IO - Read Prescription') {
       print("End REST API request to IO")
       def PrescriptionJson = readJSON file: 'io_state.json'
       print("Updated PrescriptionJson JSON :\n$PrescriptionJson\n")
       print("Sast Enabled : $PrescriptionJson.Data.Prescription.Security.Activities.Sast.Enabled")
-
     }
 
     stage('SAST- RapidScan') {
@@ -51,7 +49,6 @@ def execute() {
       synopsysIO(connectors: [rapidScan(configName: 'Sigma')]) {
         sh 'io --stage execution --state io_state.json'
       }
-
     }
 
     stage('SAST - Polaris') {
@@ -61,7 +58,6 @@ def execute() {
       ]) {
         sh 'io --stage execution --state io_state.json'
       }
-
     }
 
     stage('IO - Workflow') {
