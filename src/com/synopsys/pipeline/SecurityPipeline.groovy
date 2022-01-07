@@ -64,7 +64,6 @@ def execute() {
             echo 'Execute Workflow Stage'
             synopsysIO() {
                 synopsysIO(connectors: [slack(configName: 'io-qa')]) {
-
                     sh 'io --stage workflow --state io_state.json'
                 }
             }
