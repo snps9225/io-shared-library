@@ -52,8 +52,8 @@ def execute() {
         }
         
         stage('SAST- Spotbugs') {
-            wget "https://raw.githubusercontent.com/synopsys-sig/io-client-adapters/main/spotbugs/spotbugs.sh"
-            wget "https://raw.githubusercontent.com/synopsys-sig/io-client-adapters/main/spotbugs/spotbugs-adapter.json"
+            sh 'wget "https://raw.githubusercontent.com/synopsys-sig/io-client-adapters/main/spotbugs/spotbugs.sh"'
+            sh 'wget "https://raw.githubusercontent.com/synopsys-sig/io-client-adapters/main/spotbugs/spotbugs-adapter.json"'
             echo 'Running SAST using Spotbugs'
             synopsysIO() {
                 sh 'io --stage execution --adapters spotbugs-adapter.json --state io_state.json'
