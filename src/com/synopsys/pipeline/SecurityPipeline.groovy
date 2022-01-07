@@ -76,7 +76,8 @@ def execute() {
     
 		stage('IO - Archive') { 
 			
-				archiveArtifacts artifacts: '**/*-results*.json', allowEmptyArchive: 'true'
+				//archiveArtifacts artifacts: '**/*-results*.json', allowEmptyArchive: 'true'
+				archiveArtifacts '**/*-results*.json'
 				//remove the state json file it has sensitive information
 				//sh 'rm io_state.json'
 			
