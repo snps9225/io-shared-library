@@ -13,9 +13,9 @@ def execute() {
     node('master') {
         
 			stage('Checkout Code'){
-				steps {
+				 
 					git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
-				}
+				
 			}
 			
 			stage('Building Source...'){
