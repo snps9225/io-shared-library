@@ -13,6 +13,7 @@ def execute() {
     node('master') {
 
         stage('Checkout Code') {
+            cleanWs()
             git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
         }
 
