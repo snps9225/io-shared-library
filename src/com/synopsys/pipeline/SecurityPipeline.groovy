@@ -41,6 +41,7 @@ def execute() {
 
     					def PrescriptionJson = readJSON file: 'io_state.json'
 					 print("Updated PrescriptionJson JSON :\n$PrescriptionJson\n")
+		    			 print("Sast Enabled : $PrescriptionJson.Prescription.Security.Activities.Sast.Enabled")
 
 	    }
         
