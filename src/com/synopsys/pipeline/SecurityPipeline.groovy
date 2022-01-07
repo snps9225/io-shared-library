@@ -11,7 +11,7 @@ import java.nio.channels.Pipe
 
 def execute() {
     node('master') {
-        stages {
+        
 			stage('Checkout Code'){
 				steps {
 					git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
@@ -87,7 +87,7 @@ def execute() {
 				//remove the state json file it has sensitive information
 				sh 'rm io_state.json'
 			}
-		}
+		
     }
 }
 
