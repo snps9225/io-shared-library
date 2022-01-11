@@ -13,11 +13,11 @@ def execute() {
     node() {
 
         stage('Checkout Code') {
-            git branch: 'develop', url: ${GIT_URL}
+            git branch: 'develop', url: env.GIT_URL
         }
 
         stage('Building Source Code') {  
-            sh '''${BUILD_COMMAND}'''
+            sh '''env.BUILD_COMMAND'''
             echo 'build source code'
         }
 
