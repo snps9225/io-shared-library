@@ -11,30 +11,20 @@ import java.nio.channels.Pipe
 
 def execute() {
     node() {
-        
-        properties([
-            parameters([ 
-                string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project")
-            ])
-        ])
-        
-        /*  string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project"),
-            string(name: "build_command", defaultValue: "mvn ", description: "Code build command")]
-        )])*/
 
         stage('Checkout Code') {
-            git branch: $params.branch_name, url: 'https://github.com/snps9225/insecure-bank.git'
+            git branch: 'develop', url: ${GIT_URL}
         }
 
         stage('Building Source Code') {  
-            sh '''mvn package -Dmaven.test.skip'''
+            sh '''${BUILD_COMMAND}'''
             echo 'build source code'
         }
 
         stage('IO - Setup Prescription') {
             echo 'Setup Prescription'
             synopsysIO(connectors: [io(configName: 'io-training', projectName: 'insecure-bank', workflowVersion: '2021.12.2'), 
-                                    github(branch: $params.branch_name, configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), 
+                                    github(branch: 'develop', configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), 
                                     rapidScan(configName: 'Sigma')]) {
                 sh 'io --stage io'
             }
