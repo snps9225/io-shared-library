@@ -13,19 +13,19 @@ def execute() {
     node() {
 
         stage('Checkout Code') {
-            //git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
-            git branch: $params.branch_name, url: 'https://github.com/snps9225/insecure-bank'
+            git branch: $params.branch_name, url: $params.url
         }
 
-        stage('Building Source Code') {
-            //your build command, your way here...    
-            sh '''mvn package -Dmaven.test.skip'''
+        stage('Building Source Code') {  
+            sh '''$params.build_command'''
             echo 'build source code'
         }
 
         stage('IO - Setup Prescription') {
             echo 'Setup Prescription'
-            synopsysIO(connectors: [io(configName: 'io-training', projectName: 'insecure-bank', workflowVersion: '2021.12.2'), github(branch: 'develop', configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), rapidScan(configName: 'Sigma')]) {
+            synopsysIO(connectors: [io(configName: 'io-training', projectName: 'insecure-bank', workflowVersion: '2021.12.2'), 
+                                    github(branch: $params.branch_name, configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), 
+                                    rapidScan(configName: 'Sigma')]) {
                 sh 'io --stage io'
             }
         }
@@ -49,27 +49,16 @@ def execute() {
             }
         }
 
-        /*stage('SAST - Polaris') {
-            echo 'Running SAST using Polaris'
-            synopsysIO(connectors: [
-                [$class: 'PolarisPipelineConfig', configName: 'csprod-polaris', projectName: 'sig-devsecops/github-io-sample']
-            ]) {
-                sh 'io --stage execution --state io_state.json'
-            }
-        }*/
-
         stage('IO - Workflow') {
             echo 'Execute Workflow Stage'
             synopsysIO() {
-                //synopsysIO(connectors: [slack(configName: 'io-qa')]) {
                     sh 'io --stage workflow --state io_state.json'
-                //}
             }
         }
 
         stage('IO - Archive') {
-            //archiveArtifacts artifacts: '**/*-results*.json', allowEmptyArchive: 'true'
-            archiveArtifacts '**/*-results*.json'
+            archiveArtifacts artifacts: '**/*-results*.json', allowEmptyArchive: 'true'
+            archiveArtifacts artifacts: '**/*-report*.*', allowEmptyArchive: 'true'
             //remove the state json file it has sensitive information
             //sh 'rm io_state.json'
         }
