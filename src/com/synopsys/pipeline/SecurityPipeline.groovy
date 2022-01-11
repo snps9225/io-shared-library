@@ -13,8 +13,8 @@ def execute() {
     node() {
         
         properties([parameters([ 
-            string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project")],
-            string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project")],
+            string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project"),
+            string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project"),
             string(name: "build_command", defaultValue: "mvn ", description: "Code build command")]
         )])
 
