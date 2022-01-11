@@ -13,7 +13,7 @@ def execute() {
     node() {
 
         stage('Checkout Code') {
-            git branch: 'develop', url: env.GIT_URL
+            git branch: env.GIT_BRANCH, url: env.GIT_URL
         }
 
         stage('Building Source Code') {  
@@ -23,19 +23,19 @@ def execute() {
 
         stage('IO - Setup Prescription') {
             echo 'Setup Prescription'
-            synopsysIO(connectors: [io(configName: 'io-training', projectName: 'insecure-bank', workflowVersion: '2021.12.2'), 
-                                    github(branch: 'develop', configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), 
+            synopsysIO(connectors: [io(configName: env.IO_PROJECT, projectName: env.GIT_PROJECT, workflowVersion: env.WORKFLOW_VERSION), 
+                                    github(branch: env.GIT_BRANCH, configName: env.GIT_USR_PROJECT, owner: env.GIT_USER, repositoryName: env.GIT_PROJECT), 
                                     rapidScan(configName: 'Sigma')]) {
                 sh 'io --stage io'
             }
         }
 
-        stage('IO - Read Prescription') {
+        /*stage('IO - Read Prescription') {
             print("End REST API request to IO")
             def PrescriptionJson = readJSON file: 'io_state.json'
             print("Updated PrescriptionJson JSON :\n$PrescriptionJson\n")
             print("Sast Enabled : $PrescriptionJson.Data.Prescription.Security.Activities.Sast.Enabled")
-        }
+        }*/
 
         stage('SAST- RapidScan') {
             environment {
