@@ -12,11 +12,11 @@ import java.nio.channels.Pipe
 def execute() {
     node() {
         
-        parameters {
-            string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project")
-            string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project")
-            string(name: "build_command", defaultValue: "mvn ", description: "Code build command")
-        }
+        properties([parameters([ 
+            string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project")],
+            string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project")],
+            string(name: "build_command", defaultValue: "mvn ", description: "Code build command")]
+        )])
 
         stage('Checkout Code') {
             git branch: $params.branch_name, url: $params.url
