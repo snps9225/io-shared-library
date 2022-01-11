@@ -13,21 +13,19 @@ def execute() {
     node('master') {
 
         stage('Checkout Code') {
-            git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
+            //git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
+            git branch: 'develop', url: 'https://github.com/snps9225/insecure-bank'
         }
 
-        stage('Building Source...') {
+        stage('Building Source Code') {
             //your build command, your way here...    
-            //sh '''mvn clean compile'''
+            sh '''mvn package -Dmaven.test.skip'''
             echo 'build source code'
         }
 
         stage('IO - Setup Prescription') {
             echo 'Setup Prescription'
-            synopsysIO(connectors: [io(configName: 'iostaging', projectName: 'github-io-sample', workflowVersion: '2021.12.0.10-alpha'),
-                github(branch: 'production', configName: 'github-io-sample', owner: 'devsecops-test', repositoryName: 'github-io-sample'),
-                buildBreaker(configName: 'BB-ALL')
-            ]) {
+            synopsysIO(connectors: [io(configName: 'io-training', projectName: 'insecure-bank', workflowVersion: '2021.12.2'), github(branch: 'develop', configName: 'snps9225/insecure-bank', owner: 'snps9225', repositoryName: 'insecure-bank'), rapidScan(configName: 'Sigma')]) {
                 sh 'io --stage io'
             }
         }
@@ -51,21 +49,21 @@ def execute() {
             }
         }
 
-        stage('SAST - Polaris') {
+        /*stage('SAST - Polaris') {
             echo 'Running SAST using Polaris'
             synopsysIO(connectors: [
                 [$class: 'PolarisPipelineConfig', configName: 'csprod-polaris', projectName: 'sig-devsecops/github-io-sample']
             ]) {
                 sh 'io --stage execution --state io_state.json'
             }
-        }
+        }*/
 
         stage('IO - Workflow') {
             echo 'Execute Workflow Stage'
             synopsysIO() {
-                synopsysIO(connectors: [slack(configName: 'io-qa')]) {
+                //synopsysIO(connectors: [slack(configName: 'io-qa')]) {
                     sh 'io --stage workflow --state io_state.json'
-                }
+                //}
             }
         }
 
