@@ -12,18 +12,22 @@ import java.nio.channels.Pipe
 def execute() {
     node() {
         
-        properties([parameters([ 
-            string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project"),
-            string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project"),
+        properties([
+            parameters([ 
+                string(name: "branch_name", defaultValue: "main", trim: true, description: "Branch name of the project")
+            ])
+        ])
+        
+        /*  string(name: "url", defaultValue: "https://", trim: true, description: "Git URL of the project"),
             string(name: "build_command", defaultValue: "mvn ", description: "Code build command")]
-        )])
+        )])*/
 
         stage('Checkout Code') {
-            git branch: $params.branch_name, url: $params.url
+            git branch: $params.branch_name, url: 'https://github.com/snps9225/insecure-bank.git'
         }
 
         stage('Building Source Code') {  
-            sh '''$params.build_command'''
+            sh '''mvn package -Dmaven.test.skip'''
             echo 'build source code'
         }
 
