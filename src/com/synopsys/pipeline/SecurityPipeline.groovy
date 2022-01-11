@@ -10,7 +10,7 @@ import java.nio.channels.Pipe
  */
 
 def execute() {
-    node('master') {
+    node() {
 
         stage('Checkout Code') {
             //git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
