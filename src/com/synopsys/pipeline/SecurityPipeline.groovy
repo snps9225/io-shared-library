@@ -10,11 +10,11 @@ import java.nio.channels.Pipe
  */
 
 def execute() {
-    node('master') {
+    node() {
 
         stage('Checkout Code') {
             //git branch: 'production', url: 'https://github.com/devsecops-test/github-io-sample'
-            git branch: 'develop', url: 'https://github.com/snps9225/insecure-bank'
+            git branch: $params.branch_name, url: 'https://github.com/snps9225/insecure-bank'
         }
 
         stage('Building Source Code') {
