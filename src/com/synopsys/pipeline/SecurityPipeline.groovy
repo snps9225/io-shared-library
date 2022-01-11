@@ -17,7 +17,7 @@ def execute() {
         }
 
         stage('Building Source Code') {  
-            sh '''env.BUILD_COMMAND'''
+            sh env.BUILD_COMMAND
             echo 'build source code'
         }
 
